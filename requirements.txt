@@ -1,1 +1,12 @@
-# Dependencies
+# Backend dependencies (FastAPI email outreach agent)
+fastapi>=0.109.0
+uvicorn>=0.27.0
+sqlalchemy>=2.0.0
+asyncpg>=0.29.0
+aiosqlite>=0.19.0
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+litellm>=1.0.0
+aiosmtplib>=3.0.0
+email-reply-parser>=0.5.12
+sendgrid>=6.11.0
