@@ -2,6 +2,21 @@
 
 import { useState, useEffect } from 'react';
 
+// Backend base URL and shared-secret API key come from env (see frontend/.env.example).
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8000';
+const API_KEY = process.env.NEXT_PUBLIC_API_KEY || '';
+
+function api(path: string, init: RequestInit = {}) {
+  return fetch(`${API_BASE}${path}`, {
+    ...init,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': API_KEY,
+      ...(init.headers || {}),
+    },
+  });
+}
+
 type Draft = {
   id: number;
   sender_email: string;
@@ -35,13 +50,13 @@ export default function Home() {
       setSendgridKey(localStorage.getItem('email_sendgrid_key') || '');
 
       try {
-        const resPrompt = await fetch('http://localhost:8004/api/settings/prompt');
+        const resPrompt = await api('/api/settings/prompt');
         if (resPrompt.ok) {
           const data = await resPrompt.json();
           setPrompt(data.system_prompt || '');
         }
         
-        const resDrafts = await fetch('http://localhost:8004/api/emails/drafts');
+        const resDrafts = await api('/api/emails/drafts');
         if (resDrafts.ok) {
           const draftsData = await resDrafts.json();
           setDrafts(draftsData);
@@ -67,7 +82,7 @@ export default function Home() {
       localStorage.setItem('email_llm_provider', provider);
       localStorage.setItem('email_sendgrid_key', sendgridKey);
 
-      await fetch('http://localhost:8004/api/settings/keys', {
+      await api('/api/settings/keys', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -80,7 +95,7 @@ export default function Home() {
         }),
       });
 
-      const res = await fetch('http://localhost:8004/api/settings/prompt', {
+      const res = await api('/api/settings/prompt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ system_prompt: prompt }),
@@ -105,7 +120,7 @@ export default function Home() {
     setStatus('saving');
     
     try {
-      const res = await fetch(`http://localhost:8004/api/emails/drafts/${selectedDraft.id}/approve`, {
+      const res = await api(`/api/emails/drafts/${selectedDraft.id}/approve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ edited_content: editedContent }),
