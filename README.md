@@ -78,3 +78,7 @@ Errors are JSON (`{"error": "...", "detail": "..."}`); stack traces are never re
 4. Set `CORS_ORIGINS` to your dashboard URL. Deploy the `frontend/` on Render Static Site or Cloudflare Pages with `NEXT_PUBLIC_API_BASE` = backend URL and `NEXT_PUBLIC_API_KEY` = same `API_KEY`.
 
 Notes: SQLite works for a quick demo but Render disks are ephemeral — use Postgres for anything real. The agent only *drafts* replies; nothing sends without a human tapping **Approve & Send** in the dashboard.
+
+## Beyond the inbox: AI agents for the whole business
+
+This repo handles one channel — email. [VisionQuantech](https://visionquantech.com/ai-automation-services) builds the same human-in-the-loop pattern across chat, voice and WhatsApp: AI drafts, humans approve, customers get instant answers. See how it works for sales teams in [AI Chatbot for Real Estate Agents: Never Lose a Buyer to a Slow Reply](https://visionquantech.com/blog/ai-chatbot-for-real-estate-agents).
